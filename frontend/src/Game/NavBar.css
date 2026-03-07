@@ -1,0 +1,25 @@
+.navbar {
+  display: flex;
+  gap: 15px;
+  background-color: red;
+  width: 200px;
+  resize: "horizontal";
+}
+
+#navbar-links {
+  list-style: none;
+}
+
+#navbar-links li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.link {
+  color: white;
+}
+
+.link:hover {
+  text-decoration: none;
+}
