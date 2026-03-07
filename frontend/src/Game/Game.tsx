@@ -35,7 +35,8 @@ const Game: React.FC = () => {
   const tree1 = useRef(new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, mediumPalm));
   const tree2 = useRef(new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, highPalm, 200));
   const tree3 = useRef(new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, largeTree, 400));
-
+  const trees = [tree1, tree2, tree3];
+  let listItems: Element[] = [];
   const slash = useRef(new Slash(CANVAS_WIDTH, CANVAS_HEIGHT));
 
   useEffect(() => {
@@ -81,6 +82,8 @@ const Game: React.FC = () => {
       slash.current.render(ctx);
 
       requestAnimationFrame(gameLoop);
+
+      listItems = trees.map((tree) => <li>{tree.current.sprite.src}</li>);
     };
 
     gameLoop();
@@ -92,12 +95,15 @@ const Game: React.FC = () => {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={CANVAS_WIDTH}
-      height={CANVAS_HEIGHT}
-      style={{ border: "1px solid black" }}
-    />
+    <div>
+      <canvas
+        ref={canvasRef}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
+        style={{ border: "1px solid black" }}
+      />
+      <ul>{listItems}</ul>
+    </div>
   );
 };
 
