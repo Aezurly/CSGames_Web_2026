@@ -1,7 +1,7 @@
-import { Camera } from './Camera';
-import mainCharacterImg from '../assets/characters/main-character.png';
-import { GROUND_Y } from './Constants';
-import type { Coordinates, GameAsset } from './GameAsset';
+import { Camera } from "./Camera";
+import mainCharacterImg from "../assets/characters/main-character.png";
+import { GROUND_Y } from "./Constants";
+import type { Coordinates, GameAsset } from "./GameAsset";
 
 export class Player implements GameAsset {
   private static instance: Player | null = null;
@@ -14,10 +14,11 @@ export class Player implements GameAsset {
 
   vy: number = 0;
   onGround: boolean = false;
-  direction: 'left' | 'right' = 'right';
+  direction: "left" | "right" = "right";
 
   gravity: number;
   isBigger: boolean = false;
+  slashing: boolean = false;
 
   private constructor(gravity: number) {
     this.gravity = gravity;
@@ -37,20 +38,24 @@ export class Player implements GameAsset {
 
   handleUserInput(keys: React.RefObject<Record<string, boolean>>): void {
     // Horizontal movement + direction
-    if (keys.current?.['ArrowLeft']) {
+    if (keys.current?.["ArrowLeft"]) {
       this.pos.x -= 3;
-      this.direction = 'left';
+      this.direction = "left";
     }
 
-    if (keys.current?.['ArrowRight']) {
+    if (keys.current?.["ArrowRight"]) {
       this.pos.x += 3;
-      this.direction = 'right';
+      this.direction = "right";
     }
 
     // Jump
-    if (keys.current?.['ArrowUp'] && this.onGround) {
+    if (keys.current?.["ArrowUp"] && this.onGround) {
       this.vy = -12;
       this.onGround = false;
+    }
+
+    if (keys.current?.[" "]) {
+      this.slashing = true;
     }
 
     // Gravity
@@ -71,9 +76,15 @@ export class Player implements GameAsset {
 
     ctx.save();
 
-    if (this.direction === 'left') {
+    if (this.direction === "left") {
       ctx.scale(-1, 1);
-      ctx.drawImage(this.sprite, -screenX - this.width, this.pos.y, this.width, this.height);
+      ctx.drawImage(
+        this.sprite,
+        -screenX - this.width,
+        this.pos.y,
+        this.width,
+        this.height,
+      );
     } else {
       ctx.drawImage(this.sprite, screenX, this.pos.y, this.width, this.height);
     }
