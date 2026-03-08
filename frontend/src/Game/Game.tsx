@@ -6,7 +6,6 @@ import { Camera } from "./Camera";
 import { DarkSky } from "./DarkSky";
 import { LightSky } from "./LightSky";
 import { CloudySky } from "./CloudySky";
-import NavBar from "./NavBar";
 import "./Game.css";
 import { Tree } from "./Tree";
 import { Slash } from "./Slash";
@@ -94,15 +93,12 @@ const Game: React.FC = () => {
   }, []);
 
   return (
-    <div className="game-container">
-      <NavBar />
-      <canvas
-        ref={canvasRef}
-        width={CANVAS_WIDTH}
-        height={CANVAS_HEIGHT}
-        style={{ border: "1px solid black" }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      width={CANVAS_WIDTH}
+      height={CANVAS_HEIGHT}
+      style={{ border: "1px solid black" }}
+    />
   );
 };
 

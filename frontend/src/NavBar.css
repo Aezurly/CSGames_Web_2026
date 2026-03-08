@@ -1,9 +1,7 @@
 .navbar {
   display: flex;
   gap: 15px;
-  background-color: red;
   width: 200px;
-  resize: "horizontal";
 }
 
 #navbar-links {

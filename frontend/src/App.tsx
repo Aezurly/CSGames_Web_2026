@@ -1,9 +1,13 @@
-import './App.css';
-import Game from './Game/Game';
+import "./App.css";
+import Game from "./Game/Game";
+import NavBar from "./NavBar";
 
 function App() {
   return (
-    <Game/>
+    <div className="game-container">
+      <NavBar />
+      <Game />
+    </div>
   );
 }
 
