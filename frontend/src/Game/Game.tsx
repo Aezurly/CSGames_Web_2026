@@ -15,6 +15,7 @@ import mediumPalm from "../assets/scenery/trees/medium-palm.png";
 import largeTree from "../assets/scenery/trees/large-tree.png";
 
 import { Cube } from "./Cube";
+import { Cloud } from "./Cloud";
 
 const Game: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,6 +43,8 @@ const Game: React.FC = () => {
   const cube = useRef(new Cube(CANVAS_WIDTH, CANVAS_HEIGHT, 300));
 
   const slash = useRef(new Slash(CANVAS_WIDTH, CANVAS_HEIGHT));
+
+  const cloud = useRef(new Cloud(CANVAS_WIDTH, CANVAS_HEIGHT));
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -80,6 +83,7 @@ const Game: React.FC = () => {
       darkSky.current.render(ctx);
       lightSky.current.render(ctx);
       cloudySky.current.render(ctx);
+      cloud.current.render(ctx);
       tree1.current.render(ctx);
       tree2.current.render(ctx);
       tree3.current.render(ctx);
