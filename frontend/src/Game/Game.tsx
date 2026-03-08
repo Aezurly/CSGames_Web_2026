@@ -6,6 +6,7 @@ import { Camera } from "./Camera";
 import { DarkSky } from "./DarkSky";
 import { LightSky } from "./LightSky";
 import { CloudySky } from "./CloudySky";
+import "./Game.css";
 import { Tree } from "./Tree";
 import { Slash } from "./Slash";
 
