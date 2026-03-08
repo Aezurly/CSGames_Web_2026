@@ -1,0 +1,23 @@
+.navbar {
+  display: flex;
+  gap: 15px;
+  width: 200px;
+}
+
+#navbar-links {
+  list-style: none;
+}
+
+#navbar-links li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.link {
+  color: white;
+}
+
+.link:hover {
+  text-decoration: none;
+}
