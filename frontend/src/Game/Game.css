@@ -1,0 +1,11 @@
+.egg-container {
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px;
+
+  img {
+    width: 400px;
+  }
+}
