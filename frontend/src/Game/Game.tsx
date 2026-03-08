@@ -13,6 +13,8 @@ import highPalm from "../assets/scenery/trees/high-palm.png";
 import mediumPalm from "../assets/scenery/trees/medium-palm.png";
 import largeTree from "../assets/scenery/trees/large-tree.png";
 
+import { Cube } from "./Cube";
+
 const Game: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const keys: React.RefObject<Record<string, boolean>> = useRef<
@@ -35,6 +37,8 @@ const Game: React.FC = () => {
   const tree1 = useRef(new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, mediumPalm));
   const tree2 = useRef(new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, highPalm, 200));
   const tree3 = useRef(new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, largeTree, 400));
+
+  const cube = useRef(new Cube(CANVAS_WIDTH, CANVAS_HEIGHT, 300));
 
   const slash = useRef(new Slash(CANVAS_WIDTH, CANVAS_HEIGHT));
 
@@ -68,6 +72,10 @@ const Game: React.FC = () => {
         tree2.current.handleUserInput(keys);
       slash.current.handleUserInput(keys);
 
+      if (cube.current.inRangeOf(player.current.pos)) {
+        // play sound
+      }
+
       darkSky.current.render(ctx);
       lightSky.current.render(ctx);
       cloudySky.current.render(ctx);
@@ -79,6 +87,7 @@ const Game: React.FC = () => {
       player.current.render(ctx);
       slash.current.assignPos(player.current.pos);
       slash.current.render(ctx);
+      cube.current.render(ctx);
 
       requestAnimationFrame(gameLoop);
     };
