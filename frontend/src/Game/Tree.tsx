@@ -11,6 +11,7 @@ export class Tree implements GameAsset {
   pos: Coordinates;
   width: number;
   height: number;
+  alive: boolean = true;
 
   useCamera: boolean = true;
 
@@ -29,8 +30,6 @@ export class Tree implements GameAsset {
       this.height = this.sprite!.naturalHeight;
       this.pos = { x: x, y: GROUND_Y - this.height };
     };
-
-    console.log(this.pos);
   }
 
   inRangeOf(coordinates: Coordinates): boolean {
@@ -42,20 +41,25 @@ export class Tree implements GameAsset {
 
   handleUserInput(keys: React.RefObject<Record<string, boolean>>): void {
     // Player cut tree
-    if (keys.current?.[" "] && this.sprite.src !== largeTree) {
+    if (keys.current?.[" "] && this.sprite.src !== largeTree && this.alive) {
       this.pos.y += 2;
+      if (this.pos.y > GROUND_Y) {
+        this.alive = false;
+        console.log("TREE KILLED");
+      }
     }
   }
 
   render(ctx: CanvasRenderingContext2D): void {
     const camera = Camera.getInstance();
 
-    ctx.drawImage(
-      this.sprite,
-      this.useCamera ? camera.worldToScreenX(this.pos.x) : this.pos.x,
-      this.pos.y,
-      this.width,
-      this.height,
-    );
+    if (this.alive)
+      ctx.drawImage(
+        this.sprite,
+        this.useCamera ? camera.worldToScreenX(this.pos.x) : this.pos.x,
+        this.pos.y,
+        this.width,
+        this.height,
+      );
   }
 }
