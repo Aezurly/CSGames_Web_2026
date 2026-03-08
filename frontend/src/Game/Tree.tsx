@@ -30,8 +30,6 @@ export class Tree implements GameAsset {
       this.height = this.sprite!.naturalHeight;
       this.pos = { x: x, y: GROUND_Y - this.height };
     };
-
-    console.log(this.pos);
   }
 
   inRangeOf(coordinates: Coordinates): boolean {

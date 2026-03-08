@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, GRAVITY } from "./Constants";
 import { Player } from "./Player";
 import { Ground } from "./Ground";
@@ -32,11 +32,11 @@ const Game: React.FC = () => {
 
   const ground = useRef(new Ground(CANVAS_WIDTH, CANVAS_HEIGHT));
 
-  const tree1 = useRef(new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, mediumPalm));
-  const tree2 = useRef(new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, highPalm, 200));
-  const tree3 = useRef(new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, largeTree, 400));
-  const trees = [tree1, tree2, tree3];
-  let listItems: Element[] = [];
+  const tree1 = new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, mediumPalm);
+  const tree2 = new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, highPalm, 200);
+  const tree3 = new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, largeTree, 400);
+  const [trees, setTrees] = useState<Tree[]>([tree1, tree2, tree3]);
+  const [treeItems, setTreeItems] = useState<{ x: number; src: string }[]>([]);
   const slash = useRef(new Slash(CANVAS_WIDTH, CANVAS_HEIGHT));
 
   useEffect(() => {
@@ -63,18 +63,14 @@ const Game: React.FC = () => {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (tree1.current.inRangeOf(player.current.pos))
-        tree1.current.handleUserInput(keys);
-      else if (tree2.current.inRangeOf(player.current.pos))
-        tree2.current.handleUserInput(keys);
+      if (tree1.inRangeOf(player.current.pos)) tree1.handleUserInput(keys);
+      else if (tree2.inRangeOf(player.current.pos)) tree2.handleUserInput(keys);
       slash.current.handleUserInput(keys);
 
       darkSky.current.render(ctx);
       lightSky.current.render(ctx);
       cloudySky.current.render(ctx);
-      tree1.current.render(ctx);
-      tree2.current.render(ctx);
-      tree3.current.render(ctx);
+      trees.forEach((t) => t.render(ctx));
       ground.current.render(ctx);
       cloudySky.current.render(ctx);
       player.current.render(ctx);
@@ -83,7 +79,14 @@ const Game: React.FC = () => {
 
       requestAnimationFrame(gameLoop);
 
-      listItems = trees.map((tree) => <li>{tree.current.sprite.src}</li>);
+      setTreeItems(
+        trees.map((tree) => {
+          return {
+            x: tree.pos.x,
+            src: tree.sprite.src,
+          };
+        }),
+      );
     };
 
     gameLoop();
@@ -94,6 +97,24 @@ const Game: React.FC = () => {
     };
   }, []);
 
+  const addTree = () => {
+    const canvas = canvasRef.current!;
+    const ctx: CanvasRenderingContext2D = canvas.getContext("2d")!;
+    ctx.imageSmoothingEnabled = false;
+    const t = new Tree(CANVAS_WIDTH, CANVAS_HEIGHT, largeTree, 600);
+    trees.push(t);
+    t.render(ctx);
+  };
+
+  const deleteTree = (index: number) => {
+    setTreeItems((treeItems) => {
+      return treeItems.filter((t, i) => index === i);
+    });
+    setTreeItems((treeItems) => {
+      return treeItems.filter((t, i) => index === i);
+    });
+  };
+
   return (
     <div>
       <canvas
@@ -102,7 +123,32 @@ const Game: React.FC = () => {
         height={CANVAS_HEIGHT}
         style={{ border: "1px solid black" }}
       />
-      <ul>{listItems}</ul>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 10,
+        }}
+      >
+        {treeItems.map((tree, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <img src={tree.src} style={{ height: 35 }} />
+              <span>x: {tree.x}</span>
+              <button onClick={() => deleteTree(index)}>Delete Tree</button>
+            </div>
+          );
+        })}
+        <button onClick={addTree}> Add Tree</button>
+      </div>
     </div>
   );
 };
