@@ -38,10 +38,9 @@ export class Cloud implements GameAsset {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleUserInput(keys: React.RefObject<Record<string, boolean>>): void {
-    if (keys.current?.[" "]) {
-      // e
-    }
+    return;
   }
 
   render(ctx: CanvasRenderingContext2D): void {

@@ -16,6 +16,7 @@ import largeTree from "../assets/scenery/trees/large-tree.png";
 
 import { Cube } from "./Cube";
 import { Cloud } from "./Cloud";
+import { Props } from "./Props";
 
 const Game: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -45,6 +46,7 @@ const Game: React.FC = () => {
   const slash = useRef(new Slash(CANVAS_WIDTH, CANVAS_HEIGHT));
 
   const cloud = useRef(new Cloud(CANVAS_WIDTH, CANVAS_HEIGHT));
+  const props = useRef(new Props([100, 250, 500]));
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -75,6 +77,7 @@ const Game: React.FC = () => {
       else if (tree2.current.inRangeOf(player.current.pos))
         tree2.current.handleUserInput(keys);
       slash.current.handleUserInput(keys);
+      props.current.handleUserInput(keys);
 
       if (cube.current.inRangeOf(player.current.pos)) {
         // play sound
@@ -93,6 +96,7 @@ const Game: React.FC = () => {
       slash.current.assignPos(player.current.pos);
       slash.current.render(ctx);
       cube.current.render(ctx);
+      props.current.render(ctx);
 
       requestAnimationFrame(gameLoop);
     };
@@ -106,12 +110,17 @@ const Game: React.FC = () => {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={CANVAS_WIDTH}
-      height={CANVAS_HEIGHT}
-      style={{ border: "1px solid black" }}
-    />
+    <div>
+      <canvas
+        ref={canvasRef}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
+        style={{ border: "1px solid black" }}
+      />
+      <button onClick={() => props.current.randomize()}>
+        Générer des objets au sol
+      </button>
+    </div>
   );
 };
 

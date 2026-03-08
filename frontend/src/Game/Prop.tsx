@@ -1,11 +1,11 @@
 import { Camera } from "./Camera";
+import { GROUND_Y } from "./Constants";
 
 import type { Coordinates, GameAsset } from "./GameAsset";
-import box from "../assets/scenery/special/mystery-block.png";
 
 export const RANGE = 50;
 
-export class Cube implements GameAsset {
+export class Stuff implements GameAsset {
   sprite: HTMLImageElement;
   pos: Coordinates;
   width: number;
@@ -13,22 +13,23 @@ export class Cube implements GameAsset {
 
   useCamera: boolean = true;
 
-  constructor(width: number, height: number, x: number = 0) {
+  constructor(width: number, height: number, sprite: string, x: number = 0) {
     this.sprite = new Image();
 
     this.width = width;
     this.height = height;
 
     this.sprite = new Image();
-    this.sprite.src = box;
-    this.pos = { x: x, y: height / 2 };
+    this.sprite.src = sprite;
+    this.pos = { x: x, y: 200 };
 
     this.sprite.onload = () => {
       this.width = this.sprite!.naturalWidth;
       this.height = this.sprite!.naturalHeight;
+      this.pos = { x: x, y: GROUND_Y - this.height };
     };
 
-    console.log(this.pos);
+    console.log(this);
   }
 
   inRangeOf(coordinates: Coordinates): boolean {
@@ -45,6 +46,7 @@ export class Cube implements GameAsset {
 
   render(ctx: CanvasRenderingContext2D): void {
     const camera = Camera.getInstance();
+    // console.log(this.sprite, this.pos.y);
 
     ctx.drawImage(
       this.sprite,
